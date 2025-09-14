@@ -1,0 +1,9 @@
+# _config.yml
+theme: null        # 停用預設 jekyll-theme-primer
+markdown: GFM      # 啟用 GitHub Flavored Markdown (若有用到 .md)
+plugins: []        # 不載入其他 Jekyll plugin
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
