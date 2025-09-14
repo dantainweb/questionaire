@@ -2,193 +2,63 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>問卷調查 — 行動版 (LINE)</title>
-  <!-- LINE / 社群預覽 -->
-  <meta property="og:title" content="問卷調查 — 使用者意見回饋" />
-  <meta property="og:description" content="快速填寫、可匯出 CSV/JSON，最佳化手機瀏覽與 LINE LIFF。" />
-  <meta property="og:image" content="" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LINE 問卷調查</title>
   <style>
-    :root{--bg:#fafafa;--card:#ffffff;--accent:#00c300;--muted:#64748b}
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font-family: -apple-system,BlinkMacSystemFont,'Noto Sans CJK TC','Microsoft JhengHei',sans-serif;background:var(--bg);color:#0f172a}
-    .wrap{max-width:640px;margin:0 auto;padding:18px}
-    header{display:flex;gap:12px;align-items:center}
-    header h1{font-size:18px;margin:0}
-    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06);margin-top:12px}
-    label{display:block;font-weight:600;margin-bottom:8px}
-    input[type=text], input[type=email], select, textarea{width:100%;padding:12px;border:1px solid #e6e9f0;border-radius:10px;font-size:15px}
-    .row{display:flex;gap:8px;flex-wrap:wrap}
-    .inline{display:inline-flex;gap:10px;align-items:center}
-    .actions{display:flex;gap:8px;margin-top:12px}
-    button{flex:1;background:var(--accent);color:#fff;border:0;padding:12px;border-radius:10px;font-weight:700}
-    button.ghost{background:#fff;color:var(--accent);border:1px solid #e6f9ea}
-    .small{font-size:13px;color:var(--muted)}
-    .result{margin-top:12px;padding:10px;border-radius:8px;background:#f8fafc;border:1px dashed #e6eefc}
-    .checkbox-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-    @media (max-width:420px){.checkbox-grid{grid-template-columns:1fr}}
-    .hidden{display:none}
+    body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 20px; }
+    .container { max-width: 480px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    h1 { text-align: center; font-size: 20px; margin-bottom: 16px; }
+    label { font-weight: bold; display: block; margin-top: 12px; }
+    input, select, textarea { width: 100%; padding: 10px; margin-top: 6px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+    button { background: #06c755; color: #fff; border: none; padding: 10px; border-radius: 6px; margin-top: 16px; width: 100%; font-size: 16px; cursor: pointer; }
+    button:hover { background: #05b14b; }
+    .success { margin-top: 12px; padding: 10px; background: #e6f4ea; color: #065f46; border-radius: 6px; display: none; text-align: center; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="6" fill="#00c300"/><path d="M7 9h10M7 13h6" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <h1>問卷調查 — 使用者意見回饋</h1>
-    </header>
+  <div class="container">
+    <h1>LINE 問卷調查</h1>
+    <form id="surveyForm">
+      <label for="name">姓名</label>
+      <input type="text" id="name" name="name" placeholder="您的名字 (選填)" />
 
-    <form id="survey" class="card" autocomplete="off">
-      <label for="name">姓名 (選填)</label>
-      <input id="name" name="姓名" type="text" placeholder="例如：陳小明">
+      <label for="age">年齡區間</label>
+      <select id="age" name="age" required>
+        <option value="">請選擇</option>
+        <option>18 以下</option>
+        <option>18-24</option>
+        <option>25-34</option>
+        <option>35-44</option>
+        <option>45-54</option>
+        <option>55 以上</option>
+      </select>
 
-      <label for="email" style="margin-top:10px">電子郵件 (選填)</label>
-      <input id="email" name="電子郵件" type="email" placeholder="example@mail.com">
+      <label>整體滿意度</label>
+      <select name="satisfaction" required>
+        <option value="">請選擇</option>
+        <option value="1">1 - 非常不滿意</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5 - 非常滿意</option>
+      </select>
 
-      <div style="display:flex;gap:10px;margin-top:10px">
-        <div style="flex:1">
-          <label for="age">年齡區間</label>
-          <select id="age" name="年齡" required>
-            <option value="">請選擇</option>
-            <option>18 以下</option>
-            <option>18-24</option>
-            <option>25-34</option>
-            <option>35-44</option>
-            <option>45-54</option>
-            <option>55 以上</option>
-          </select>
-        </div>
-        <div style="width:120px">
-          <label>性別</label>
-          <select name="性別">
-            <option value="">不選</option>
-            <option>男</option>
-            <option>女</option>
-            <option>不願透露</option>
-          </select>
-        </div>
-      </div>
+      <label for="comment">意見建議</label>
+      <textarea id="comment" name="comment" rows="4" placeholder="請輸入您的建議..." ></textarea>
 
-      <div style="margin-top:12px">
-        <label>整體滿意度</label>
-        <div class="row" style="margin-top:6px">
-          <label class="inline"><input type="radio" name="滿意度" value="1" required> 1</label>
-          <label class="inline"><input type="radio" name="滿意度" value="2"> 2</label>
-          <label class="inline"><input type="radio" name="滿意度" value="3"> 3</label>
-          <label class="inline"><input type="radio" name="滿意度" value="4"> 4</label>
-          <label class="inline"><input type="radio" name="滿意度" value="5"> 5</label>
-        </div>
-        <div class="small">1 = 非常不滿意，5 = 非常滿意</div>
-      </div>
-
-      <div style="margin-top:12px">
-        <label>希望改進的地方 (可複選)</label>
-        <div class="checkbox-grid" style="margin-top:6px">
-          <label><input type="checkbox" name="改進" value="使用者介面"> 使用者介面</label>
-          <label><input type="checkbox" name="改進" value="功能穩定性"> 功能穩定性</label>
-          <label><input type="checkbox" name="改進" value="速度"> 速度</label>
-          <label><input type="checkbox" name="改進" value="客服"> 客服</label>
-        </div>
-      </div>
-
-      <div style="margin-top:12px">
-        <label for="msg">其他意見</label>
-        <textarea id="msg" name="其他意見" rows="4" placeholder="寫下你的建議..."></textarea>
-      </div>
-
-      <div style="margin-top:12px">
-        <label for="recommend">是否會推薦給朋友？</label>
-        <select id="recommend" name="推薦" required>
-          <option value="">請選擇</option>
-          <option>會，非常願意</option>
-          <option>可能會</option>
-          <option>不一定</option>
-          <option>不會</option>
-        </select>
-      </div>
-
-      <div class="actions" style="margin-top:14px">
-        <button type="submit">送出</button>
-        <button type="button" class="ghost" id="exportBtn">匯出 CSV</button>
-      </div>
-
-      <div id="result" class="result hidden" role="status" aria-live="polite"></div>
+      <button type="submit">送出</button>
     </form>
-
-    <p class="small" style="margin-top:12px">建議：將此頁部署到支援 HTTPS 的網域，並將連結貼到 LINE 聊天室或群組作為問卷連結。若要在 LINE App 中獲得更好的整合（例如抓取使用者 LINE 名稱或 UID），可使用 LIFF（需註冊 LINE Developers 並填入 LIFF ID）。</p>
+    <div id="successMessage" class="success">✅ 感謝您的回覆！</div>
   </div>
 
   <script>
-    // Helper: serialize form into object
-    function formToObj(form){
-      const fd = new FormData(form); const obj = {};
-      for (const [k,v] of fd.entries()){
-        if (obj[k]){
-          if (Array.isArray(obj[k])) obj[k].push(v); else obj[k] = [obj[k], v];
-        } else obj[k] = v;
-      }
-      return obj;
-    }
-
-    function toCSV(obj){
-      const keys = Object.keys(obj);
-      const escape = s => '"'+String(s).replace(/"/g,'""')+'"';
-      const header = keys.map(escape).join(',');
-      const row = keys.map(k => {
-        let v = obj[k]; if (Array.isArray(v)) v = v.join('; '); if (v==null) v = '';
-        return escape(v);
-      }).join(',');
-      return header + '\n' + row;
-    }
-
-    const form = document.getElementById('survey');
-    const res = document.getElementById('result');
-    const exportBtn = document.getElementById('exportBtn');
-
-    form.addEventListener('submit', function(e){
+    document.getElementById('surveyForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      // basic required checks
-      if (!form.age?.value && !form.querySelector('select[name="年齡"]') ){
-        // no-op: kept for compatibility
-      }
-      const obj = formToObj(form);
-
-      // Example: POST to your server endpoint (replace URL)
-      // fetch('https://your-server.example.com/survey', {
-      //   method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(obj)
-      // }).then(r=>...)
-
-      // Show success UI and offer downloads
-      const json = JSON.stringify(obj, null, 2);
-      const csv = toCSV(obj);
-      res.classList.remove('hidden');
-      res.innerHTML = '<strong>送出成功！</strong><div style="margin-top:8px">'+
-        '<button id="dlc">下載 CSV</button> <button id="dlj">下載 JSON</button></div>'+
-        '<pre style="margin-top:8px;white-space:pre-wrap;word-break:break-word">'+escapeHtml(json)+'</pre>';
-      document.getElementById('dlc').addEventListener('click', ()=> downloadFile('survey-response.csv', csv, 'text/csv'));
-      document.getElementById('dlj').addEventListener('click', ()=> downloadFile('survey-response.json', json, 'application/json'));
+      document.getElementById('successMessage').style.display = 'block';
+      // 這裡可以改成把資料送到後端或 LINE Bot webhook
+      console.log('表單資料：', Object.fromEntries(new FormData(this)));
+      this.reset();
     });
-
-    exportBtn.addEventListener('click', ()=>{
-      const obj = formToObj(form); const csv = toCSV(obj);
-      downloadFile('survey-export.csv', csv, 'text/csv');
-    });
-
-    function downloadFile(filename, content, type){
-      const blob = new Blob([content], {type: type+';charset=utf-8'});
-      const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(url); a.remove();}, 200);
-    }
-
-    function escapeHtml(s){ return String(s).replace(/[&"'<>]/g, function(m){return ({'&':'&amp;','"':'&quot;',"'":"&#39;",'<':'&lt;','>':'&gt;'}[m]);}); }
-
-    // --- Optional: LIFF integration stub ---
-    // If you plan to use LIFF (讓問卷能抓取 LINE 使用者資訊 / 更好體驗), uncomment and replace YOUR_LIFF_ID
-    // <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    // liff.init({ liffId: 'YOUR_LIFF_ID' }).then(()=>{ if (liff.isLoggedIn()){ liff.getProfile().then(p=>{ document.getElementById('name').value = p.displayName; }); }}).catch(()=>{});
-
-    // Accessibility / fast focus
-    (function(){ if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; })();
   </script>
 </body>
 </html>
